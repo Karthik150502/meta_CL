@@ -1,18 +1,21 @@
 {
-  "name": "New folder",
+  "name": "metaverse-zep",
   "private": true,
   "scripts": {
     "build": "turbo build",
+    "start": "cd apps/server && pnpm run start && cd apps/websokcet && pnpm run start",
     "dev": "turbo dev",
     "lint": "turbo lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "dev:docker": "npm run prisma:docker && yarn run dev",
+    "prisma:docker": "cd packages/db && npx prisma migrate dev --skip-seed && npx prisma db seed"
   },
   "devDependencies": {
     "prettier": "^3.2.5",
     "turbo": "^2.2.3",
     "typescript": "5.5.4"
   },
-  "packageManager": "pnpm@8.15.6",
+  "packageManager":"pnpm@8.15.6",
   "engines": {
     "node": ">=18"
   }

@@ -1,0 +1,96 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider="prisma-client-js"
+}
+
+datasource db {
+  provider="postgresql"
+  url=env("DATABASE_URL")
+}
+
+model User {
+  id        String  @id @unique @default(cuid())
+  username  String  @unique
+  password  String
+  firstname String?
+  lastname  String?
+  role      Role
+
+  space Space[]
+
+  avatarId String?
+  avatar   Avatar? @relation(fields: [avatarId], references: [id])
+}
+
+model Space {
+  id        String  @id @unique @default(cuid())
+  name      String
+  width     Int
+  height    Int
+  thumbnail String?
+
+  creatorId String
+  creator   User   @relation(fields: [creatorId], references: [id])
+
+  spaceElements SpaceElements[]
+}
+
+model SpaceElements {
+  id String @id @unique @default(cuid())
+  x  Int
+  y  Int
+
+  spaceId String
+  space   Space  @relation(fields: [spaceId], references: [id])
+
+  elementId String
+  element   Element @relation(fields: [elementId], references: [id])
+}
+
+model Element {
+  id            String          @id @unique @default(cuid())
+  width         Int
+  height        Int
+  imageUrl      String
+  static        Boolean
+  SpaceElements SpaceElements[]
+  mapElements   MapElements[]
+}
+
+model Map {
+  id          String        @id @unique @default(cuid())
+  thumbnail   String
+  width       Int
+  height      Int
+  name        String
+  mapElements MapElements[]
+}
+
+model MapElements {
+  id String @id @unique @default(cuid())
+  x  Int
+  y  Int
+
+  mapId String
+  map   Map    @relation(fields: [mapId], references: [id])
+
+  elementId String
+  element   Element @relation(fields: [elementId], references: [id])
+}
+
+model Avatar {
+  id       String  @id @unique @default(cuid())
+  imageUrl String?
+  name     String?
+  User     User[]
+}
+
+enum Role {
+  Admin
+  User
+}

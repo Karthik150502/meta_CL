@@ -1,10 +1,14 @@
-import SignupComponent from '@/app/components/auth/signup'
+import SignupComponent from '@/app/auth/_components/auth/signup'
+import LandingText from '@/components/ui/app/landingText'
 import React from 'react'
 
 export default function SignupPage() {
-  return (
-    <div>
-        <SignupComponent/>
-    </div>
-  )
+    return (
+        <div className='min-h-screen overflow-hidden relative flex items-center justify-center flex-col'>
+            <LandingText>
+                SignUp | MetaCL
+            </LandingText>
+            <SignupComponent />
+        </div>
+    )
 }

@@ -1,15 +1,18 @@
-import { Account, AuthOptions, ISODateString, User } from "next-auth"
+import { AuthOptions, AuthValidity, DecodedJWT, ISODateString, Session, User, UserObject } from "next-auth"
 import { JWT } from "next-auth/jwt";
 import axios from "axios"
-const LOGIN_URL = ""
-import { AdapterUser } from "next-auth/adapters";
+import { SIGN_IN_URL } from "@/lib/api";
 import CredentialsProvider from "next-auth/providers/credentials";
-
+import jwt from "jsonwebtoken"
+import { AdapterUser } from "next-auth/adapters";
+import { refreshAccessToken } from "./utils";
 export type CustomSession = {
     user?: CustomUser,
     expires: ISODateString
 }
 
+
+`https://sourcehawk.medium.com/next-auth-with-a-custom-authentication-backend-12c8f54ed4ce`
 
 export type CustomUser = {
     id?: string | null,
@@ -21,16 +24,13 @@ export type CustomUser = {
 }
 
 
-
-
-
-
 export const authOptions: AuthOptions = {
     pages: {
         signIn: "/auth/sign-in",
         error: "/auth/error",
-        signOut: "/auth/sign-up"
+        newUser: "/auth/sign-up"
     },
+
 
 
     session: {
@@ -49,18 +49,48 @@ export const authOptions: AuthOptions = {
                 username: { label: "Username", type: "text", placeholder: "jsmith" },
                 password: { label: "Password", type: "password" }
             },
-            async authorize(credentials, req) {
-                // Add logic here to look up the user from the credentials supplied
-                const user = { id: "1", name: "J Smith", email: "jsmith@example.com" }
+            async authorize(credentials) {
+                // Add logic here to look up the user from the credentials supplied.
+                try {
+                    const res = await axios.post(SIGN_IN_URL, {
+                        username: credentials?.username,
+                        password: credentials?.password
+                    })
+                    console.log("@res = ", res.data)
+                    const accessTokenBody = res.data.token.split(" ")[1];
+                    const refreshTokenBody = res.data.refreshToken.split(" ")[1];
+                    const access = jwt.decode(accessTokenBody) as DecodedJWT;
+                    const refresh = jwt.decode(refreshTokenBody) as DecodedJWT;
 
-                if (user) {
-                    // Any object returned will be saved in `user` property of the JWT
-                    return user
-                } else {
-                    // If you return null then an error will be displayed advising the user to check their details.
+                    console.log({ access, refresh })
+                    if (!access || !refresh) {
+                        return null
+                    }
+
+                    const user: UserObject = {
+                        username: access.username,
+                        role: access.role,
+                        id: access.id
+                    };
+
+                    // Extract the auth validity from the tokens
+                    const validity: AuthValidity = {
+                        valid_until: access.exp,
+                        refresh_until: refresh.exp
+                    };
+
+
+                    return {
+                        id: String(user.id),
+                        tokens: {
+                            access: accessTokenBody,
+                            refresh: refreshTokenBody
+                        },
+                        user: user,
+                        validity: validity
+                    }
+                } catch (e) {
                     return null
-
-                    // You can also Reject this callback with an Error thus the user will be sent to the error page with the error message as a query parameter
                 }
             }
         })
@@ -68,5 +98,33 @@ export const authOptions: AuthOptions = {
 
     callbacks: {
 
+        async jwt({ user, token }: { token: JWT, user: User }) {
+            console.dir({ token, user }, { depth: null })
+            // Initial signin contains a 'User' object from authorize method
+            if (user) {
+                console.debug("Initial signin");
+                return { ...token, data: user };
+            }
+            // The current access token is still valid
+            if (Date.now() < token.data.validity.valid_until * 1000) {
+                return token;
+            }
+            // The current access token has expired, but the refresh token is still valid
+            if (Date.now() < token.data.validity.refresh_until * 1000) {
+                console.debug("Access token is being refreshed");
+                return await refreshAccessToken(token);
+            }
+            console.debug("Both tokens have expired");
+            return { ...token, error: "RefreshTokenExpired" } as JWT;
+        },
+
+        async session({ session, user, token }: { user: AdapterUser, session: Session, token: JWT }) {
+            console.log("Session Data")
+            console.dir({ session, user, token }, { depth: null })
+            if (token.data.user) {
+                session.user = token.data.user as UserObject
+            }
+            return session;
+        }
     }
 }

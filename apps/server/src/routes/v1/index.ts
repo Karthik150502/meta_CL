@@ -22,6 +22,7 @@ router.post("/sign-up", async (req: Request, res: Response) => {
     const parsedData = SignUpSchema.safeParse(req.body);
 
     if (!parsedData.success) {
+        console.log("error" + JSON.stringify(parsedData.error.flatten().fieldErrors))
         res.status(403).json({
             status: 403,
             message: "Validation Failed, enter all the Fields.",
@@ -107,14 +108,26 @@ router.post("/sign-in", async (req: Request, res: Response) => {
         }
         const token = jwt.sign({
             id: userExists.id,
+            username: userExists.username,
             role: userExists.role
-        }, JWT_SECRET)
+        }, JWT_SECRET, {
+            expiresIn: 60 * 60 * 2
+        })
+
+        const refreshToken = jwt.sign({
+            id: userExists.id,
+            username: userExists.username,
+            role: userExists.role
+        }, JWT_SECRET, {
+            expiresIn: 60 * 60 * 24 * 10
+        })
 
         res.status(200).json({
             status: 200,
             message: "User signed in successfully",
             id: userExists.id,
-            token: `Bearer ${token}`
+            token: `Bearer ${token}`,
+            refreshToken: `Bearer ${refreshToken}`
         })
         return;
     } catch (e) {

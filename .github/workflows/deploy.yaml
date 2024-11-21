@@ -1,0 +1,33 @@
+name: Build and deploy to dockerhub
+
+
+on: 
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repo
+        uses: actions/checkout@v2
+
+      - name: Login to the Docker Hub account
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}     
+          password: ${{ secrets.DOCKER_PASSWORD }}     
+      
+      - name: Build and Push docker image
+        uses: docker/build-push-action@v2
+        with:
+          context: .
+          file: ./docker/Dockerfile.fe
+          push: true
+          tags: karthik150502/metacl_fe_intro:latest
+
+      - name: Verify pushed image
+        run: docker pull karthik150502/metacl_fe_intro:latest
+
+

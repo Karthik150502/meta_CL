@@ -8,6 +8,9 @@ const router = Router();
 
 
 router.post("/", userMiddleware, async (req: Request, res: Response) => {
+
+    console.log("Data = ", req.body);
+
     const parsedData = CreateSpaceSchema.safeParse(req.body)
     if (!parsedData.success) {
         res.status(400).json({

@@ -1,0 +1,42 @@
+# Use the official Node.js image as the base
+FROM node:20-alpine AS base
+
+# Set the working directory
+WORKDIR /app
+
+# Install PNPM globally
+RUN npm install -g pnpm
+
+# Stage 1: Install dependencies
+FROM base AS dependencies
+
+# Copy only the files required for dependency installation
+COPY turbo.json pnpm-workspace.yaml package.json pnpm-lock.yaml ./
+
+# Install only the dependencies for the server app
+RUN pnpm install --frozen-lockfile --filter ./apps/server...
+
+# Stage 2: Build the server app
+FROM dependencies AS build
+
+# Copy the entire repository to build the server app
+COPY . .
+
+# Build the server app (if required)
+RUN pnpm --filter ./apps/server build
+
+# Stage 3: Runtime
+FROM base AS runtime
+
+# Copy runtime dependencies
+COPY --from=dependencies /app/node_modules ./node_modules
+COPY --from=build /app/apps/server ./apps/server
+
+# Set the working directory to the server app
+WORKDIR /app/apps/server
+
+# Expose the server's port
+EXPOSE 3000
+
+# Set the default command to run the server
+CMD ["node", "dist/index.js"]

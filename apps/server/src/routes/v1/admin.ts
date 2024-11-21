@@ -106,6 +106,7 @@ router.post("/map", async (req: Request, res: Response) => {
 
     const parsedData = CreateMapSchema.safeParse(req.body)
     if (!parsedData.success) {
+        console.log(JSON.stringify(parsedData.error, null, 4))
         res.status(400).json({
             status: 400,
             message: "Validation Failed"

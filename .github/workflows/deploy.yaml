@@ -3,10 +3,10 @@ name: Build and Push Docker Image
 on:
   push:
     branches:
-      - master  # Triggers the workflow on pushes to the main branch
+      - main  # Triggers the workflow on pushes to the main branch
   pull_request:
     branches:
-      - master  # Optionally, trigger on PRs to the main branch
+      - main  # Optionally, trigger on PRs to the main branch
 
 jobs:
   build-and-push:

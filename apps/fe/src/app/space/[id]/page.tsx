@@ -20,6 +20,7 @@ export default function SpaceRenderer({ params }: Props) {
                         <Home />
                     </Button>
                 </Link>
+                <p>{params.id}</p>
             </header>
             <div className='flex items-center justify-start w-full min-h-screen pl-[80px]'>
                 <Arena />

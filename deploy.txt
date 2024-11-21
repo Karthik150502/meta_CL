@@ -1,0 +1,37 @@
+name: Build and Push Docker Image
+
+on:
+  push:
+    branches:
+      - main  # Triggers the workflow on pushes to the main branch
+  pull_request:
+    branches:
+      - main  # Optionally, trigger on PRs to the main branch
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+    # Step 1: Checkout the repository
+    - name: Checkout Code
+      uses: actions/checkout@v3
+
+    # Step 2: Log in to DockerHub (or another container registry)
+    - name: Log in to DockerHub
+      uses: docker/login-action@v2
+      with:
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+
+    # Step 3: Build the Docker image
+    - name: Build Docker Image
+      run: |
+        docker build \
+          -f docker/Dockerfile.server \
+          -t ${{ secrets.DOCKER_USERNAME }}/node-server:latest .
+
+    # Step 4: Push the Docker image to DockerHub
+    - name: Push Docker Image
+      run: |
+        docker push ${{ secrets.DOCKER_USERNAME }}/node-server:latest

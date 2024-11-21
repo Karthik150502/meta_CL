@@ -4,6 +4,7 @@ import { useQuery } from '@tanstack/react-query'
 import { getMaps } from '@/actions/getMaps'
 import MapCard from './mapCard'
 
+
 type SingleMapType = {
     id: string
     name: string,

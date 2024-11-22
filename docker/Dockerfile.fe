@@ -15,7 +15,9 @@ RUN pnpm install -r
 # 
 RUN pnpm run db:generate
 
-RUN cd ./apps/fe && next build
+
+# RUN pnpm turbo run build --filter=./apps/fe...
+RUN pnpm run build-fe 
 
 
 CMD ["pnpm", "run", "start-fe"]

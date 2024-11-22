@@ -11,6 +11,7 @@
     "prisma:docker": "cd packages/db && npx prisma migrate dev --skip-seed && npx prisma db seed",
     "db:generate":"cd packages/db && npx prisma generate && cd ../..",
     "start-fe":"cd ./apps/fe && pnpm run start",
+    "build-fe":"cd ./apps/fe && pnpm run-script build && ../..",
     "start-server":"cd ./apps/server && pnpm run start"
   },
   "devDependencies": {

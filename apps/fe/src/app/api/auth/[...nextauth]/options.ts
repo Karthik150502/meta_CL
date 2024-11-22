@@ -12,7 +12,7 @@ export type CustomSession = {
 }
 
 
-`https://sourcehawk.medium.com/next-auth-with-a-custom-authentication-backend-12c8f54ed4ce`
+// `https://sourcehawk.medium.com/next-auth-with-a-custom-authentication-backend-12c8f54ed4ce`
 
 export type CustomUser = {
     id?: string | null,

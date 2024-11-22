@@ -1,5 +1,4 @@
 import z from "zod"
-import { SpaceElements } from "@repo/db/node_modules/@prisma/client"
 export const SignUpSchema = z.object({
     username: z.string(),
     password: z.string().min(6),

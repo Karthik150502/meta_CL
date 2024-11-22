@@ -6,6 +6,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import jwt from "jsonwebtoken"
 import { AdapterUser } from "next-auth/adapters";
 import { refreshAccessToken } from "./utils";
+import { JWT_SECRET, NEXTAUTH_SECRET } from "@/lib/config";
 export type CustomSession = {
     user?: CustomUser,
     expires: ISODateString
@@ -31,7 +32,7 @@ export const authOptions: AuthOptions = {
         newUser: "/auth/sign-up"
     },
 
-
+    secret: NEXTAUTH_SECRET,// The secret should be kept safe
 
     session: {
         maxAge: 2 * 60 * 60, // 2 Hours,

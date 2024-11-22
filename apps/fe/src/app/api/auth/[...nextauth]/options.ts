@@ -6,7 +6,7 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import jwt from "jsonwebtoken"
 import { AdapterUser } from "next-auth/adapters";
 import { refreshAccessToken } from "./utils";
-import { JWT_SECRET, NEXTAUTH_SECRET } from "@/lib/config";
+import { NEXTAUTH_SECRET } from "@/lib/config";
 export type CustomSession = {
     user?: CustomUser,
     expires: ISODateString

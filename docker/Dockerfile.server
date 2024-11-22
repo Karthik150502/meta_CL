@@ -19,5 +19,5 @@ RUN pnpm run db:generate
 RUN pnpm turbo run build --filter=./apps/server...
 
 
-CMD ["pnpm", "run", "start-fe"]
+CMD ["pnpm", "run", "start-server"]
 

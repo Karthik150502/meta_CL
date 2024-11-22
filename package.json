@@ -10,7 +10,8 @@
     "dev:docker": "npm run prisma:docker && pnpm run dev",
     "prisma:docker": "cd packages/db && npx prisma migrate dev --skip-seed && npx prisma db seed",
     "db:generate":"cd packages/db && npx prisma generate && cd ../..",
-    "start-fe":"cd ./apps/fe && pnpm run start"
+    "start-fe":"cd ./apps/fe && pnpm run start",
+    "start-server":"cd ./apps/server && pnpm run start"
   },
   "devDependencies": {
     "prettier": "^3.2.5",

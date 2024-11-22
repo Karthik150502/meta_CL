@@ -60,7 +60,7 @@ router.post("/sign-up", async (req: Request, res: Response) => {
             id: user?.id
         })
         return;
-    } catch (e) {
+    } catch {
         res.status(403).json({
             status: 403,
             message: "Some error occured, kindly try again later",
@@ -130,7 +130,7 @@ router.post("/sign-in", async (req: Request, res: Response) => {
             refreshToken: `Bearer ${refreshToken}`
         })
         return;
-    } catch (e) {
+    } catch {
         res.status(403).json({
             status: 403,
             message: "Some error occured, try again later."

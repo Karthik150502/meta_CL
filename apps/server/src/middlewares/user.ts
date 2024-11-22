@@ -24,7 +24,7 @@ export function userMiddleware(req: Request, res: Response, next: NextFunction) 
         const decoded = jwt.verify(token, JWT_SECRET) as { id: string, role: string }
         req.userId = decoded.id;
         next()
-    } catch (e) {
+    } catch {
         res.status(403).json({
             status: 403,
             message: "Unauthorized"

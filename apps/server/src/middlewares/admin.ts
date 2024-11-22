@@ -35,7 +35,7 @@ export function adminMiddleware(req: Request, res: Response, next: NextFunction)
         }
         req.userId = decoded.id;
         next()
-    } catch (e) {
+    } catch {
         res.status(403).json({
             status: 403,
             message: "Unauthorized"

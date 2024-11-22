@@ -89,7 +89,7 @@ export const authOptions: AuthOptions = {
                         user: user,
                         validity: validity
                     }
-                } catch (e) {
+                } catch {
                     return null
                 }
             }

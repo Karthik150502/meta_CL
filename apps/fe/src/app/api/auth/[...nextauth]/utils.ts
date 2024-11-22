@@ -40,7 +40,7 @@ export async function refresh(token: string): Promise<Response> {
     // Verify that the refresh token is valid and not expired
     try {
         jwt.verify(token, JWT_SECRET);
-    } catch (err) {
+    } catch {
         throw new Error("Refresh token expired");
     }
 

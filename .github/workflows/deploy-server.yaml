@@ -1,4 +1,4 @@
-name: Build and deploy to dockerhub
+name: Build and deploy Server App to dockerhub
 
 
 on: 
@@ -23,9 +23,9 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           context: .
-          file: ./docker/Dockerfile.fe
+          file: ./docker/Dockerfile.server
           push: true
-          tags: karthik150502/metacl_fe_intro:latest
+          tags: karthik150502/metacl_server_intro:latest
 
       - name: Verify pushed image
-        run: docker pull karthik150502/metacl_fe_intro:latest
+        run: docker pull karthik150502/metacl_server_intro:latest

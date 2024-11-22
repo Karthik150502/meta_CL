@@ -11,7 +11,6 @@ import { JWT_SECRET } from "../lib/config";
 export function userMiddleware(req: Request, res: Response, next: NextFunction) {
     const headerToken = req.headers.authorization;
     const token = headerToken?.split(" ")[1]
-    console.log("Token = ", JSON.stringify(headerToken, null, 4))
     if (!token) {
         res.status(403).json({
             status: 403,

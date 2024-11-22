@@ -1,6 +1,5 @@
 import z from "zod"
-
-
+import { SpaceElements } from "@repo/db/node_modules/@prisma/client"
 export const SignUpSchema = z.object({
     username: z.string(),
     password: z.string().min(6),
@@ -67,5 +66,19 @@ export const CreateMapSchema = z.object({
         y: z.number(),
     }))
 })
+
+
+
+export type GetSpacesType = {
+    id: string,
+    name: string,
+    width: number,
+    height: number,
+    thumbnail: string,
+    creatorId: string,
+    creator: {
+        username: string
+    }
+}
 
 

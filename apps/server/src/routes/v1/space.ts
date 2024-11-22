@@ -32,7 +32,12 @@ router.post("/", userMiddleware, async (req: Request, res: Response) => {
                 name: parsedData.data.name,
                 width,
                 height,
-                creatorId: req.userId!
+                creatorId: req.userId!,
+                SpaceMember: {
+                    create: {
+                        userId: req.userId!
+                    }
+                }
             }
         })
 
@@ -75,6 +80,11 @@ router.post("/", userMiddleware, async (req: Request, res: Response) => {
                 width: map.width,
                 height: map.height,
                 creatorId: req.userId!,
+                SpaceMember: {
+                    create: {
+                        userId: req.userId!
+                    }
+                }
             }
         })
         await prisma.spaceElements.createMany({
@@ -102,14 +112,45 @@ router.post("/", userMiddleware, async (req: Request, res: Response) => {
 })
 
 
-router.get("/all", userMiddleware, async (req: Request, res: Response) => {
 
+
+router.get("/user-spaces", userMiddleware, async (req: Request, res: Response) => {
+
+    let userId = req.userId;
+
+    let spaces = await prisma.spaceMember.findMany({
+        where: {
+            userId: userId
+        },
+        include: {
+            space: {
+                include: {
+                    creator: {
+                        select: {
+                            username: true
+                        }
+                    }
+                }
+            },
+        }
+    })
+
+    res.json({
+        status: 200,
+        spaces: spaces,
+        message: "User spaces fetched successfully."
+    })
+    return;
+})
+
+
+
+router.get("/all", userMiddleware, async (req: Request, res: Response) => {
     let spaces = await prisma.space.findMany({
         where: {
             creatorId: req.userId
         }
     })
-
     res.status(200).json({
         status: 200,
         message: "Spaces retrieved",

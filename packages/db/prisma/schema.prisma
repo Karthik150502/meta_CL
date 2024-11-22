@@ -5,12 +5,12 @@
 // Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
 
 generator client {
-  provider="prisma-client-js"
+  provider = "prisma-client-js"
 }
 
 datasource db {
-  provider="postgresql"
-  url=env("DATABASE_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 model User {
@@ -23,8 +23,9 @@ model User {
 
   space Space[]
 
-  avatarId String?
-  avatar   Avatar? @relation(fields: [avatarId], references: [id])
+  avatarId    String?
+  avatar      Avatar?       @relation(fields: [avatarId], references: [id])
+  SpaceMember SpaceMember[]
 }
 
 model Space {
@@ -38,6 +39,15 @@ model Space {
   creator   User   @relation(fields: [creatorId], references: [id])
 
   spaceElements SpaceElements[]
+  SpaceMember   SpaceMember[]
+}
+
+model SpaceMember {
+  id      String @id @unique @default(cuid())
+  userId  String
+  user    User   @relation(fields: [userId], references: [id])
+  spaceId String
+  space   Space  @relation(fields: [spaceId], references: [id])
 }
 
 model SpaceElements {

@@ -30,9 +30,9 @@ export default function Header() {
 
                             <Link href={"/join-space"} className='text-black/70 hover:text-black transition-colors' >Join Space</Link>
 
-                            {
+                            {/* {
                                 isAdmin && <Link href={"/builder"} className='text-black/70 hover:text-black transition-colors'>Builder</Link>
-                            }
+                            } */}
 
                             <Link href={"#"} className='text-black/70 hover:text-black transition-colors'
                                 onClick={(e) => {

@@ -3,14 +3,15 @@ import React from 'react'
 import { Menu } from 'lucide-react';
 import Link from 'next/link';
 import LogoIcon from '../logoIcon';
-import { signOut, useSession } from 'next-auth/react';
+import { signOut } from 'next-auth/react';
+// import {  useSession } from 'next-auth/react';
 import CreateSpace from './createSpace';
 export default function Header() {
 
 
-    const { data: session } = useSession();
+    // const { data: session } = useSession();
 
-    const isAdmin = session?.user?.role === "Admin";
+    // const isAdmin = session?.user?.role === "Admin";
     return (
         <header className='py-4 border-b border-white/15 md:border-none fixed top-0 z-10 backdrop-blur-xl md:backdrop-blur-none w-full'>
             {/* <div className="absolute inset-0 backdrop-blur-xl -z-10"></div> */}

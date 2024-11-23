@@ -7,11 +7,12 @@ import jwt from "jsonwebtoken"
 import { AdapterUser } from "next-auth/adapters";
 import { refreshAccessToken } from "./utils";
 import { NEXTAUTH_SECRET } from "@/lib/config";
+
+
 export type CustomSession = {
     user?: CustomUser,
     expires: ISODateString
 }
-
 
 // `https://sourcehawk.medium.com/next-auth-with-a-custom-authentication-backend-12c8f54ed4ce`
 

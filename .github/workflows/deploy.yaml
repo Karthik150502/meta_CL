@@ -25,6 +25,7 @@ jobs:
           context: .
           build-args: |
               NEXT_PUBLIC_NEXTAUTH_URL=${{ secrets.NEXT_PUBLIC_NEXTAUTH_URL }} |         
+              NEXTAUTH_URL=${{ secrets.NEXTAUTH_URL }} |         
               NEXTAUTH_SECRET=${{ secrets.NEXTAUTH_SECRET }} |         
               JWT_SECRET=${{ secrets.JWT_SECRET }}
           file: ./docker/Dockerfile.fe

@@ -6,6 +6,7 @@ import LogoIcon from '../logoIcon';
 import { signOut } from 'next-auth/react';
 // import {  useSession } from 'next-auth/react';
 import CreateSpace from './createSpace';
+import JoinSpace from './joinSpace';
 export default function Header() {
 
 
@@ -13,7 +14,7 @@ export default function Header() {
 
     // const isAdmin = session?.user?.role === "Admin";
     return (
-        <header className='py-4 border-b border-white/15 md:border-none fixed top-0 z-10 backdrop-blur-xl md:backdrop-blur-none w-full'>
+        <header className='py-4 border-b border-white/15 md:border-none fixed top-0 z-10 backdrop-blur-xl md:backdrop-blur-none w-full flex items-center justify-center'>
             {/* <div className="absolute inset-0 backdrop-blur-xl -z-10"></div> */}
             <div className="container">
                 {/*removed - md:border border-white/15 */}
@@ -25,16 +26,11 @@ export default function Header() {
                     </div>
                     <div className='hidden md:block'>
                         <nav className='flex gap-8 text-xs px-4'>
-
-
                             <CreateSpace />
-
-                            <Link href={"/join-space"} className='text-black/70 hover:text-black transition-colors' >Join Space</Link>
-
+                            <JoinSpace />
                             {/* {
                                 isAdmin && <Link href={"/builder"} className='text-black/70 hover:text-black transition-colors'>Builder</Link>
                             } */}
-
                             <Link href={"#"} className='text-black/70 hover:text-black transition-colors'
                                 onClick={(e) => {
                                     e.preventDefault();

@@ -34,7 +34,7 @@ export default function CreateSpace() {
             setOpen(false);
             setMapId("");
             toast.success("Created a space successfully.", { id: "space-create" })
-            router.push(`/space/${data.id}`)
+            router.push(`/space/join/${data.id}`)
         },
         onError: () => {
             toast.error("Failed to create space.", { id: "space-create" })
@@ -66,8 +66,8 @@ export default function CreateSpace() {
                         }} /></CarouselItem>
                         <CarouselItem className='flex items-center justify-center'><EnterSpaceDetails onSubmit={onSubmit} /></CarouselItem>
                     </CarouselContent>
-                    <CarouselPrevious />
-                    <CarouselNext />
+                    <CarouselPrevious className='' />
+                    <CarouselNext className='key' />
                 </Carousel>
                 <AlertDialogFooter className='w-full border-t border-t-black/15 py-4'>
                     <Button variant={"outline"} onClick={() => {
@@ -77,5 +77,5 @@ export default function CreateSpace() {
             </AlertDialogContent>
         </AlertDialog>
 
-    )
+    )   
 }

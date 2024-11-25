@@ -3,7 +3,7 @@ import { Check } from 'lucide-react';
 import { cn } from '@/lib/utils';
 
 
-type Props = {
+interface Props {
     id: string,
     name: string,
     width: number,

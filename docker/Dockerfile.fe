@@ -8,6 +8,18 @@ COPY apps ./apps
 COPY packages ./packages
 
 
+# Build args
+
+# Set environment variables from build args
+ARG NEXT_PUBLIC_NEXTAUTH_URL
+ARG JWT_SECRET
+ARG NEXTAUTH_SECRET
+
+ENV NEXT_PUBLIC_NEXTAUTH_URL=${NEXT_PUBLIC_NEXTAUTH_URL}
+ENV JWT_SECRET=${JWT_SECRET}
+ENV NEXTAUTH_SECRET=${NEXTAUTH_SECRET}
+
+
 # Install dependencies
 RUN npm install -g pnpm
 RUN pnpm install -r

@@ -6,6 +6,7 @@ import { authOptions } from "./api/auth/[...nextauth]/options";
 import { montserrat400 } from "./fonts/montserrat";
 import ReactQueryProviders from "@/providers/reactQueryProvider";
 import { Toaster } from "sonner";
+import RecoilProvider from "@/providers/recoilProvider";
 
 
 
@@ -25,16 +26,18 @@ export default async function RootLayout({
 
   return (
     <html lang="en">
-      <NextSessionProvider session={session}>
-        <ReactQueryProviders>
-          <body
-            className={`${montserrat400.className} min-h-screen overflow-hidden relative antialiased`}
-          >
-            {children}
-            <Toaster />
-          </body>
-        </ReactQueryProviders>
-      </NextSessionProvider>
+      <RecoilProvider>
+        <NextSessionProvider session={session}>
+          <ReactQueryProviders>
+            <body
+              className={`${montserrat400.className} min-h-screen overflow-hidden relative antialiased`}
+            >
+              {children}
+              <Toaster />
+            </body>
+          </ReactQueryProviders>
+        </NextSessionProvider>
+      </RecoilProvider>
     </html>
   );
 }

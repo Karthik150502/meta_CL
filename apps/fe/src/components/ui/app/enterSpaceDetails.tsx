@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/form"
 import { Input } from '../input';
 import { Button } from '../button';
-export default function EnterSpaceDetails({ onSubmit }: { onSubmit: (vals: CreateSpaceSchemaType) => void }) {
+export default function EnterSpaceDetails({ onSubmit }: { onSubmit: (_vals: CreateSpaceSchemaType) => void }) {
 
 
     const form = useForm<CreateSpaceSchemaType>({

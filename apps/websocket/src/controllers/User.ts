@@ -20,6 +20,7 @@ export class User {
         this.x = 0;
         this.y = 0;
         this.initialize()
+        console.log("User connected = ", this.id);
     }
 
     initialize() {
@@ -64,6 +65,7 @@ export class User {
 
 
     destroy() {
+        console.log("User disconnected.....", this.id);
         this.ws.close();
         UserActions.destroy({
             type: "user-leave",

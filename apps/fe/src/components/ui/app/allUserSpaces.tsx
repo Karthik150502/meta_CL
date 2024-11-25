@@ -1,5 +1,5 @@
 'use client'
-import { getAllUserSpaces } from '@/actions/getSpsaces'
+import { getAllUserSpaces } from '@/actions/getSpaces'
 import { useQuery } from '@tanstack/react-query'
 import React from 'react'
 import SpaceSelector from './spaceSelector'
@@ -30,7 +30,7 @@ export default function AllUserSpaces() {
                 isPending ? (
                     ["", "", "", "", "", "", "", ""].map((item, index) => <SpaceSelectorSkeleton key={index} />)
                 ) : (
-                    [...data, ...data, ...data, ...data].map((item: DataFromGetSpaces) => <SpaceSelector key={item.id} space={item.space} />)
+                    data.map((item: DataFromGetSpaces, index: number) => <SpaceSelector key={item.id + index} space={item.space} />)
                 )
             }
         </div>

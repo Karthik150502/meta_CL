@@ -38,10 +38,6 @@ export class RoomManager {
 
 
     public broadcast(payload: OutgoingPayload, user: User, spaceId: string) {
-
-
-        console.log(payload)
-        console.log(spaceId)
         if (!this.rooms.get(spaceId)) {
             return;
         }

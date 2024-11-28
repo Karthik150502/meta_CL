@@ -12,7 +12,11 @@
     "db:generate":"cd packages/db && npx prisma generate && cd ../..",
     "start-fe":"cd ./apps/fe && pnpm run start",
     "build-fe":"cd ./apps/fe && pnpm run-script build",
-    "start-server":"cd ./apps/server && pnpm run start"
+    "start-server":"cd ./apps/server && pnpm run start",
+    "build-server":"cd ./apps/server && pnpm run-script build",
+    "start-websocket":"cd ./apps/websocket && pnpm run start",
+    "build-websocket":"cd ./apps/websocket && pnpm run-script build",
+    "start-server":"cd ./apps/server && pnpm run start",
   },
   "devDependencies": {
     "prettier": "^3.2.5",

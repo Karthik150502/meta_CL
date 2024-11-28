@@ -7,6 +7,13 @@ COPY package.json pnpm-lock.yaml turbo.json ./
 COPY apps ./apps
 COPY packages ./packages
 
+# Build args
+ARG JWT_SECRET
+
+# Set environment variables from build args
+ENV JWT_SECRET=${JWT_SECRET}
+
+
 
 # Install dependencies
 RUN npm install -g pnpm
@@ -16,8 +23,9 @@ RUN pnpm install -r
 RUN pnpm run db:generate
 
 
-RUN pnpm turbo run build --filter=./apps/websocket...
+# RUN pnpm turbo run build --filter=./apps/websocket...
+RUN pnpm run build-websocket 
 
 
-CMD ["pnpm", "run", "start-fe"]
+CMD ["pnpm", "run", "start-websocket"]
 

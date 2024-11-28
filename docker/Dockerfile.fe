@@ -7,15 +7,12 @@ COPY package.json pnpm-lock.yaml turbo.json ./
 COPY apps ./apps
 COPY packages ./packages
 
-
 # Build args
-
-# Set environment variables from build args
 ARG NEXT_PUBLIC_NEXTAUTH_URL
 ARG NEXTAUTH_URL
 ARG JWT_SECRET
 ARG NEXTAUTH_SECRET
-
+# Set environment variables from build args
 ENV NEXT_PUBLIC_NEXTAUTH_URL=${NEXT_PUBLIC_NEXTAUTH_URL}
 ENV NEXTAUTH_URL=${NEXTAUTH_URL}
 ENV JWT_SECRET=${JWT_SECRET}

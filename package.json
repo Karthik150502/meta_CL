@@ -16,7 +16,7 @@
     "build-server":"cd ./apps/server && pnpm run-script build",
     "start-websocket":"cd ./apps/websocket && pnpm run start",
     "build-websocket":"cd ./apps/websocket && pnpm run-script build",
-    "start-server":"cd ./apps/server && pnpm run start",
+    "start-server":"cd ./apps/server && pnpm run start"
   },
   "devDependencies": {
     "prettier": "^3.2.5",

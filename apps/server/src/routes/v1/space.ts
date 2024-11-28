@@ -113,6 +113,10 @@ router.post("/", userMiddleware, async (req: Request, res: Response) => {
 
 
 router.post("/space-member", userMiddleware, async (req: Request, res: Response) => {
+
+    console.log("======================================================================")
+    console.log("================================userMiddleware======================================")
+    console.log("======================================================================")
     const { userId, spaceId } = req.body;
     const response = await prisma.spaceMember.create({
         data: {

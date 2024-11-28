@@ -15,6 +15,9 @@ export type UserMovePayload = {
     x: number,
     y: number
 }
+export type UserChatPayload = {
+    message: string
+}
 
 
 

@@ -4,15 +4,15 @@ import { getTheCookie } from '@/actions/test'
 import { Button } from '@/components/ui/button'
 import TooltipWrapper from '@/providers/tooltipProvider'
 import { useQuery } from '@tanstack/react-query'
-// import { useMutation } from '@tanstack/react-query'
+import { useMutation } from '@tanstack/react-query'
 import { ArrowLeft } from 'lucide-react'
 import { useRouter } from 'next/navigation'
-import React from 'react'
-// import { useEffect } from 'react'
+import React, { useEffect } from 'react'
 import { useSetRecoilState } from 'recoil'
 import { SpaceInfoAtom } from '@/recoil'
 import { useWSSocket } from '@/context/ws'
-// import { createSpaceMember } from '@/actions/checkCreateSpaceMember'
+import { checkSpaceMember } from '@/actions/checkCreateSpaceMember'
+import { createSpaceMember } from '@/actions/checkCreateSpaceMember'
 type Props = {
     params: {
         id: string
@@ -34,32 +34,52 @@ export default function JoinPage({ params }: Props) {
     });
 
 
+    const { data: isMemberOfSpace } = useQuery({
+        queryKey: ["check-space-member"],
+        queryFn: async () => await checkSpaceMember({
+            spaceId: params.id
+        })
+    })
 
 
-    // const { data: spaceMemberCreate, mutate } = useMutation({
-    //     mutationKey: [`space-member-create`],
-    //     mutationFn: async () => {
-    //         return await createSpaceMember({ spaceId: params.id });
-    //     }
-    // })
 
-    // useEffect(() => {
-    //     console.log('====================================');
-    //     console.log(spaceMemberCreate);
-    //     console.log('====================================');
-    // }, [spaceMemberCreate])
+    const { mutate: joinSpace } = useMutation({
+        mutationKey: [`space-member-create`],
+        mutationFn: async () => {
+            return await handleSpaceJoin();
+        }
+    })
 
 
-    // useEffect(() => {
-    //     mutate();
-    // }, [])
-
+    useEffect(() => {
+        if (ws?.socket) {
+            ws.socket.onmessage = (data) => {
+                setSpaceInfo({
+                    spaceId: params.id,
+                    message: data.data
+                });
+                router.push(`/space/${params.id}`);
+            }
+        }
+        return () => {
+            if (ws?.socket) {
+                ws.socket.onmessage = () => {
+                }
+            }
+        }
+    }, [ws?.socket, setSpaceInfo, params.id, router])
 
 
     const handleSpaceJoin = async () => {
+        if (!isMemberOfSpace) {
+            try {
+                await createSpaceMember({ spaceId: params.id });
+            } catch {
+                return;
+            }
+        }
         const token = await getTheCookie()
         if (ws) {
-
             const data = JSON.stringify({
                 type: "join",
                 payload: {
@@ -68,10 +88,6 @@ export default function JoinPage({ params }: Props) {
                 }
             })
             ws.sendMessage(data)
-            setSpaceInfo({
-                message: data,
-                spaceId: params.id,
-            })
         }
     }
 
@@ -92,8 +108,7 @@ export default function JoinPage({ params }: Props) {
                     <Button
                         disabled={isPending}
                         onClick={async () => {
-                            await handleSpaceJoin();
-                            router.push(`/space/${params.id}`)
+                            joinSpace();
                         }}
                     >Enter Space</Button>
                 </div>

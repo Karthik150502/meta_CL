@@ -3,11 +3,13 @@ import { v4 as uuidv4 } from 'uuid';
 import { JwtPayload, verify } from "jsonwebtoken";
 import { UserActions } from "./UserActions";
 import { JWT_SECRET } from "../lib/config";
+import { parse } from "dotenv";
 
 
 export class User {
 
-    public id: string
+    public id: string;
+    public username: string = '';
     private spaceId?: string;
     private x: number;
     private y: number;
@@ -19,7 +21,7 @@ export class User {
         this.id = uuidv4();
         this.x = 0;
         this.y = 0;
-        this.initialize()
+        this.initialize();
         console.log("User connected = ", this.id);
     }
 
@@ -37,12 +39,24 @@ export class User {
                         return;
                     }
                     this.id = decoded.id;
-                    console.log(`User ${this.id} joined the space, ${this.id}`);
+                    this.username = decoded.username;
+                    console.log(`User ${this.id} joined the space, ${parsed.payload.spaceId}`);
                     UserActions.addUser(parsed, this)
                     break;
                 }
                 case "move": {
+                    console.log("user moved.....")
                     UserActions.userMove(parsed, this)
+                    break;
+                }
+                case "chat": {
+                    UserActions.userChat(parsed, this)
+                    break;
+                }
+
+                case "leave-space": {
+                    console.log("user leave triggered.")
+                    this.destroy()
                     break;
                 }
                 default: {

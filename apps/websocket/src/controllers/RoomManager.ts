@@ -44,7 +44,7 @@ export class RoomManager {
 
         this.rooms.get(spaceId)?.forEach((u) => {
             // debug logs
-            console.log(`Sending message to user ${u.id} in space ${user.id}`);
+            console.log(`Sending message to user ${u.id} in space ${spaceId}`);
             if (u.id != user.id) {
                 console.log("event is sent")
                 u.send(payload)
